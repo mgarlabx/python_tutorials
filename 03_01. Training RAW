@@ -1,36 +1,6 @@
 {
  "cells": [
   {
-   "cell_type": "markdown",
-   "metadata": {
-    "button": false,
-    "new_sheet": false,
-    "run_control": {
-     "read_only": false
-    }
-   },
-   "source": [
-    "# Python Tutorials\n",
-    "\n",
-    "### Training basic example\n",
-    "\n",
-    "Solvertank Digital Science   \n",
-    "[http://www.solvertank.com](http://www.solvertank.com)   \n",
-    "<img src=\"cube.gif\" align=\"left\" width=\"50\" />"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "### Scikit-learn\n",
-    "<img src=\"https://scikit-learn.org/stable/_static/scikit-learn-logo-small.png\" align=\"left\" width=\"100\" />   \n",
-    "    \n",
-    "https://scikit-learn.org/   \n",
-    "Scikit-learn is simple and efficient tools for data mining and data analysis"
-   ]
-  },
-  {
    "cell_type": "code",
    "execution_count": 1,
    "metadata": {
@@ -42,31 +12,19 @@
    },
    "outputs": [],
    "source": [
-    "# Load dataset \n",
-    "# https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_breast_cancer.html\n",
     "from sklearn.datasets import load_breast_cancer\n",
-    "data = load_breast_cancer()"
+    "from sklearn.linear_model import LogisticRegression\n",
+    "from sklearn.model_selection import train_test_split\n",
+    "from sklearn.metrics import accuracy_score"
    ]
   },
   {
    "cell_type": "code",
    "execution_count": 2,
-   "metadata": {
-    "button": false,
-    "new_sheet": false,
-    "run_control": {
-     "read_only": false
-    }
-   },
+   "metadata": {},
    "outputs": [],
    "source": [
-    "# Split data\n",
-    "# https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html\n",
-    "from sklearn.model_selection import train_test_split\n",
-    "X = data['data'] # for Pandas DataFrame, use df.iloc[:,0:11].values or df.loc[:, df.columns != 'target'].values\n",
-    "y = data['target'] # for Pandas DataFrame, use df.iloc[:,11].values or df['target'].values\n",
-    "y = y.astype('int')\n",
-    "X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33)"
+    "data = load_breast_cancer()"
    ]
   },
   {
@@ -81,15 +39,29 @@
    },
    "outputs": [],
    "source": [
-    "# Logistic Regression\n",
-    "# https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html\n",
-    "from sklearn.linear_model import LogisticRegression\n",
-    "model = LogisticRegression(solver='newton-cg') #load algorithm"
+    "X = data['data'].astype('int')\n",
+    "y = data['target'].astype('int')\n",
+    "X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33)"
    ]
   },
   {
    "cell_type": "code",
    "execution_count": 4,
+   "metadata": {
+    "button": false,
+    "new_sheet": false,
+    "run_control": {
+     "read_only": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "model = LogisticRegression(solver='newton-cg')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
    "metadata": {
     "button": false,
     "new_sheet": false,
@@ -108,19 +80,18 @@
        "LogisticRegression(solver='newton-cg')"
       ]
      },
-     "execution_count": 4,
+     "execution_count": 5,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "# Train\n",
     "model.fit(X_train, y_train)"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 5,
+   "execution_count": 6,
    "metadata": {
     "button": false,
     "new_sheet": false,
@@ -130,51 +101,12 @@
    },
    "outputs": [],
    "source": [
-    "# Predict\n",
     "y_pred = model.predict(X_test) "
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "### Interpretation of Performance Measures\n",
-    "https://blog.exsilio.com/all/accuracy-precision-recall-f1-score-interpretation-of-performance-measures/"
    ]
   },
   {
    "cell_type": "code",
    "execution_count": 7,
-   "metadata": {
-    "button": false,
-    "new_sheet": false,
-    "run_control": {
-     "read_only": false
-    }
-   },
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "array([[ 66,   8],\n",
-       "       [  3, 111]])"
-      ]
-     },
-     "execution_count": 7,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "# Confusion Matrix\n",
-    "# https://scikit-learn.org/stable/modules/generated/sklearn.metrics.confusion_matrix.html\n",
-    "from sklearn.metrics import confusion_matrix\n",
-    "confusion_matrix(y_test, y_pred) # TN, FP, FN, TP"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 6,
    "metadata": {
     "button": false,
     "new_sheet": false,
@@ -190,140 +122,14 @@
        "0.9414893617021277"
       ]
      },
-     "execution_count": 6,
+     "execution_count": 7,
      "metadata": {},
      "output_type": "execute_result"
     }
    ],
    "source": [
-    "# Accuracy (TP+TN)/(TP+FP+FN+TN)\n",
-    "# https://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html#sklearn.metrics.accuracy_score\n",
-    "from sklearn.metrics import accuracy_score\n",
     "accuracy_score(y_test, y_pred)"
    ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 8,
-   "metadata": {
-    "button": false,
-    "new_sheet": false,
-    "run_control": {
-     "read_only": false
-    }
-   },
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "0.9327731092436975"
-      ]
-     },
-     "execution_count": 8,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "# Precision TP/(TP+FP)\n",
-    "# https://scikit-learn.org/stable/modules/generated/sklearn.metrics.precision_score.html#sklearn.metrics.precision_score\n",
-    "from sklearn.metrics import precision_score\n",
-    "precision_score(y_test, y_pred)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 9,
-   "metadata": {
-    "button": false,
-    "new_sheet": false,
-    "run_control": {
-     "read_only": false
-    }
-   },
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "0.9736842105263158"
-      ]
-     },
-     "execution_count": 9,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "# Recall TP/(TP+FN)\n",
-    "# https://scikit-learn.org/stable/modules/generated/sklearn.metrics.recall_score.html#sklearn.metrics.recall_score\n",
-    "from sklearn.metrics import recall_score\n",
-    "recall_score(y_test, y_pred)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 10,
-   "metadata": {
-    "button": false,
-    "new_sheet": false,
-    "run_control": {
-     "read_only": false
-    }
-   },
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "0.9527896995708156"
-      ]
-     },
-     "execution_count": 10,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "# F1  2*(Recall * Precision) / (Recall + Precision)\n",
-    "# https://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html#sklearn.metrics.f1_score\n",
-    "from sklearn.metrics import f1_score\n",
-    "f1_score(y_test, y_pred)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 11,
-   "metadata": {
-    "button": false,
-    "new_sheet": false,
-    "run_control": {
-     "read_only": false
-    }
-   },
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "0.9327880512091039"
-      ]
-     },
-     "execution_count": 11,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "# ROC AUC\n",
-    "# https://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_auc_score.html#sklearn.metrics.roc_auc_score\n",
-    "from sklearn.metrics import roc_auc_score\n",
-    "roc_auc_score(y_test, y_pred)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": []
   }
  ],
  "metadata": {
